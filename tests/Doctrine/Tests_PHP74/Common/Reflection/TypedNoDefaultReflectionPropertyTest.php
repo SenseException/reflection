@@ -23,9 +23,27 @@ class TypedNoDefaultReflectionPropertyTest extends TestCase
 
         self::assertNull($reflProperty->getValue($object));
     }
+
+    public function testGetValueNullIfUninitialized() : void
+    {
+        $object = new TypedFoo();
+
+        $reflection = new TypedNoDefaultReflectionProperty($object, 'id');
+
+        $this->assertNull($reflection->getValue($object));
+
+        $object->id = 1;
+
+        $this->assertEquals(1, $reflection->getValue($object));
+    }
 }
 
 class TypedNoDefaultReflectionPropertyTestClass
 {
     public string $test;
+}
+
+class TypedFoo
+{
+    public int $id;
 }
